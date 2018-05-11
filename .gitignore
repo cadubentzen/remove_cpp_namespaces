@@ -1,0 +1,4 @@
+*.swp
+__pychache__/
+*.pyc
+*_output.cpp
