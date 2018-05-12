@@ -18,11 +18,15 @@ def rm(text, namespace):
         text = text.replace(text[start:(j+1)], text[(i+1):j])
         start = text.find('namespace %s' % namespace)
 
-    text.replace('%s::' % namespace, '')
-
     return text
 
-def rm_file_save(name, namespace, output=None, style=None, clang_format=None):
+def rm_using(text, namespace):
+    text = text.replace('using %s;' % namespace, '')
+    text = text.replace('using ::%s;' % namespace, '')
+    text = re.sub(r'using ([:]{0,2})%s[^;]' % namespace, 'using \1', text)
+    return text
+
+def rm_file_save(name, namespaces, output=None, style=None, clang_format=None):
     text = ''
     with open(name, 'r') as f:
         text = f.read()
@@ -30,7 +34,15 @@ def rm_file_save(name, namespace, output=None, style=None, clang_format=None):
     if text == '':
         return
 
-    text = rm(text, namespace)
+    for n in namespaces:
+        text = rm(text, n)
+        text = text.replace('%s::' % n, '')
+        text = rm_using(text, n)
+
+    # Remove remaining newlines in the beginning
+    text = re.sub(r'^\n+', '', text)
+    # Turn more than one blank line into one
+    text = re.sub(r'[\n]{3,}', '\n\n', text)
 
     output = output if output else name
     with open(output, 'w') as f:
