@@ -8,5 +8,5 @@ namespace goo {
         {
         }
     };
-}
-}
+} // anything
+} // namespace goo

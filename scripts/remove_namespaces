@@ -1,0 +1,16 @@
+#!/usr/bin/env python3
+
+import sys
+from remove_cpp_namespaces.namespace import rm_file_save
+
+if __name__ == '__main__':
+    if len(sys.argv) > 2:
+        namespaces = sys.argv[1].split(',')
+        print('Namespaces to remove: %s' % sys.argv[1])
+        for n in sys.argv[2:]:
+            print('Removing namespaces in %s' % n)
+            rm_file_save(n, namespaces, style='file', clang_format='clang-format-6.0')
+    else:
+        print('usage: %s <namespaces> <filenames>' % (sys.argv[0]))
+        print('    <namespaces>: comma-separated namespaces to remove')
+        print('    <filenames>: space-separated list of files to process')

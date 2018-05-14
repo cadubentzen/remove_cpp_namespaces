@@ -3,8 +3,8 @@ namespace goo {
 void hoo()
 {
 }
-} // namespace foo
-} // anything
+}
+}
 
 int main(int argc, char* argv[])
 {

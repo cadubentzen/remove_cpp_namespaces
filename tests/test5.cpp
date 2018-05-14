@@ -2,7 +2,7 @@ namespace foo {
 void goo()
 {
 }
-}
+} // namespace foo
 
 int main(int argc, char* argv[])
 {

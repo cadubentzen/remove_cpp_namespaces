@@ -5,7 +5,7 @@ public:
     {
     }
 };
-}
+} // anything
 
 namespace foo {
 class Goo {

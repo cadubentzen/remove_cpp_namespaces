@@ -1,12 +1,26 @@
 import sys
 import re
 import subprocess
-from brace import find_matching_brace, get_inner_text
+from remove_cpp_namespaces.brace import find_matching_brace, get_inner_text
 
+
+def in_comment_line(text, index):
+    rev = text[:index][::-1]
+    new_line_index = rev.find('\n')
+    if new_line_index == -1:
+        return False
+
+    # FIXME: this only works for one-line comments
+    return ('//' in rev[:new_line_index]) or ('/*' in  rev[:new_line_index])
 
 def rm(text, namespace):
     start = text.find('namespace %s' % namespace)
     while start != -1:
+        if in_comment_line(text, start):
+            new_line_after_comment = text.find('\n', start)
+            start = text.find('namespace %s' % namespace, new_line_after_comment)
+            continue
+
         i = text.find('{', start)
         if i == -1:
             break
@@ -14,6 +28,11 @@ def rm(text, namespace):
         j = i + find_matching_brace(text[i:])
         if j == i - 1 or j == i + 1:
             break
+
+        newline_after_j = text.find('\n', j)
+        if newline_after_j != -1:
+            text = text[:(j+1)] + text[newline_after_j:]
+            print(text)
 
         text = text.replace(text[start:(j+1)], text[(i+1):j])
         start = text.find('namespace %s' % namespace)

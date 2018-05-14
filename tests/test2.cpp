@@ -4,5 +4,5 @@ namespace goo {
     public:
         Foo() {}
     };
-}
+} // namespace goo
 }

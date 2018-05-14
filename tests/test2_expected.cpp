@@ -3,4 +3,4 @@ class Foo {
 public:
     Foo() {}
 };
-}
+} // namespace goo
