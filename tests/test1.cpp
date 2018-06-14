@@ -1,7 +1,8 @@
 namespace foo {
 class Foo {
 public:
-    Foo()
+    Foo() {}
+    ~Foo()
     {
     }
 };

@@ -1,6 +1,4 @@
-void hoo()
-{
-}
+void hoo() {}
 
 int main(int argc, char* argv[])
 {

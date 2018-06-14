@@ -3,8 +3,6 @@
 namespace goo {
 class Foo {
 public:
-    Foo()
-    {
-    }
+    Foo() {}
 };
 } // anything

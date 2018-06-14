@@ -4,9 +4,7 @@ namespace foo {
 namespace goo {
     class Foo {
     public:
-        Foo()
-        {
-        }
+        Foo() {}
     };
 } // anything
-} // namespace goo
+} // namespace foo

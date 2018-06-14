@@ -1,10 +1,8 @@
 namespace foo {
 namespace goo {
-void hoo()
-{
-}
+void hoo() {}
+} // namespace goo
 } // namespace foo
-} // anything
 
 int main(int argc, char* argv[])
 {

@@ -3,41 +3,34 @@ import re
 import subprocess
 from remove_cpp_namespaces.brace import find_matching_brace, get_inner_text
 
-
-def in_comment_line(text, index):
-    rev = text[:index][::-1]
-    new_line_index = rev.find('\n')
-    if new_line_index == -1:
-        return False
-
-    # FIXME: this only works for one-line comments
-    return ('//' in rev[:new_line_index]) or ('/*' in  rev[:new_line_index])
-
 def rm(text, namespace):
-    start = text.find('namespace %s' % namespace)
+    ns = 'namespace %s' % namespace
+    start = text.find(ns)
     while start != -1:
-        if in_comment_line(text, start):
-            new_line_after_comment = text.find('\n', start)
-            start = text.find('namespace %s' % namespace, new_line_after_comment)
+        start_bracket = -1
+        for i in range(start + len(ns), len(text)):
+            if not text[i] in [' ', '\n', '{']:
+                break
+            elif text[i] == '{':
+                start_bracket = i
+
+        if start_bracket == -1:
+            start = text.find(ns, start + len(ns))
             continue
 
-        i = text.find('{', start)
-        if i == -1:
+        end_bracket = find_matching_brace(text[start_bracket:])
+        if end_bracket in [-1, 1]:
             break
 
-        j = i + find_matching_brace(text[i:])
-        if j == i - 1 or j == i + 1:
-            break
+        end_bracket = end_bracket + start_bracket
 
-        newline_after_j = text.find('\n', j)
-        if newline_after_j != -1:
-            text = text[:(j+1)] + text[newline_after_j:]
-            print(text)
-
-        text = text.replace(text[start:(j+1)], text[(i+1):j])
-        start = text.find('namespace %s' % namespace)
+        text = text.replace(text[start:(end_bracket+1)], text[(start_bracket+1):end_bracket])
+        start = text.find(ns)
 
     return text
+
+def rm_comments(text, namespace):
+    return text.replace('// namespace %s\n' % namespace, '')
 
 def rm_using(text, namespace):
     text = text.replace('using %s;' % namespace, '')
@@ -54,6 +47,7 @@ def rm_file_save(name, namespaces, output=None, style=None, clang_format=None):
         return
 
     for n in namespaces:
+        text = rm_comments(text, n)
         text = rm(text, n)
         text = text.replace('%s::' % n, '')
         text = rm_using(text, n)

@@ -1,17 +1,13 @@
 namespace foo {
 class Foo {
 public:
-    Foo()
-    {
-    }
+    Foo() {}
 };
-} // anything
+} // namespace foo
 
 namespace foo {
 class Goo {
 public:
-    Goo()
-    {
-    }
+    Goo() {}
 };
 }

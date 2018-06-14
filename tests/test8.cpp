@@ -1,8 +1,6 @@
 namespace foo {
 namespace goo {
-void hoo()
-{
-}
+void hoo() {}
 }
 }
 

@@ -1,13 +1,9 @@
 class Foo {
 public:
-    Foo()
-    {
-    }
+    Foo() {}
 };
 
 class Goo {
 public:
-    Goo()
-    {
-    }
+    Goo() {}
 };

@@ -1,6 +1,7 @@
 class Foo {
 public:
-    Foo()
+    Foo() {}
+    ~Foo()
     {
     }
 };

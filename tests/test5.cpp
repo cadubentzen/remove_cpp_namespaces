@@ -1,7 +1,5 @@
 namespace foo {
-void goo()
-{
-}
+void goo() {}
 } // namespace foo
 
 int main(int argc, char* argv[])
